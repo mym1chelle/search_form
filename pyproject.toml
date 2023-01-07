@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "test-fastapi"
+name = "search_form"
 version = "0.1.0"
 description = ""
 authors = ["Timur <81976283+mym1chelle@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "search_form"}]
+packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
