@@ -1,0 +1,10 @@
+.pytest_cache
+.venv
+main_db.json
+test_db.json
+__pycache__
+.DS_Store
+.coverage
+coverage.xml
+.env
+.idea/
