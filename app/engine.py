@@ -1,4 +1,5 @@
 import re
+from typing import Dict
 from constants import (
     DATE_TEMPLATE_WITH_DASH,
     DATE_TEMPLATE_WITH_DOT,
@@ -7,28 +8,28 @@ from constants import (
 )
 
 
-def get_type(param: tuple) -> tuple:
-    if param[1] == '':
-        return param[0], None
+def get_type(form_field: Dict[str, str]) -> Dict[str, str | None]:
+    if form_field['value'] == '':
+        return {form_field['name']: None}
     if re.match(
-            DATE_TEMPLATE_WITH_DOT, param[1]
-    ) or re.match(DATE_TEMPLATE_WITH_DASH, param[1]):
-        return param[0], 'date'
-    if re.match(PHONE_NUMBER_TEMPLATE, param[1]):
-        return param[0], 'phone'
-    if re.match(EMAIL_TEMPLATE, param[1]):
-        return param[0], 'email'
-    return param[0], 'text'
+            DATE_TEMPLATE_WITH_DOT, form_field['value']
+    ) or re.match(DATE_TEMPLATE_WITH_DASH, form_field['value']):
+        return {form_field['name']: 'date'}
+    if re.match(PHONE_NUMBER_TEMPLATE, form_field['value']):
+        return {form_field['name']: 'phone'}
+    if re.match(EMAIL_TEMPLATE, form_field['value']):
+        return {form_field['name']: 'email'}
+    return {form_field['name']: 'text'}
 
 
-def get_templates(set_of_fields: set, template):
-    form = {item[0]: item[1] for item in set_of_fields if item[1]}
-    result = []
-    for item in template:
-        print(item)
-        name = item.pop('name')
-        if all(form.get(key) == value for key, value in item.items()):
-            result.append(name)
-    if not result:
-        result = form
-    return result
+def get_templates(
+        dict_of_fields: Dict[str, str],
+        templates: Dict) -> str | None:
+    for template in templates:
+        template_name = template.pop('name')
+        if all(
+                dict_of_fields.get(key) == value
+                for key, value in template.items()
+        ):
+            return template_name
+    return None
