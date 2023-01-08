@@ -22,17 +22,20 @@ def get_db():
 @app.post("/get_form")
 async def get_template(
         request: Request,
-        response: Response,
         db=Depends(get_db)) -> Response | JSONResponse | list:
     request_body = await request.body()
     body_dict = dict(parse.parse_qsl(request_body.decode()))
     body_all = parse.parse_qsl(request_body.decode())
     if body_dict == {}:
-        response.status_code = status.HTTP_406_NOT_ACCEPTABLE
-        return []
+        return JSONResponse(
+            content={'ERROR': 'Form is empty'},
+            status_code=status.HTTP_406_NOT_ACCEPTABLE
+        )
     if len(body_dict) != len(body_all):
-        response.status_code = status.HTTP_409_CONFLICT
-        return []
+        return JSONResponse(
+            content={'ERROR': 'Form has duplicates'},
+            status_code=status.HTTP_409_CONFLICT
+        )
     form_fields = [
         {'name': key, 'value': value}
         for key, value in body_dict.items()
@@ -42,5 +45,5 @@ async def get_template(
         dict_type_fields.update(get_type(field))
     found_template = get_templates(dict_type_fields, db.all())
     if found_template:
-        return Response(content=found_template, media_type="application/json")
+        return Response(content=found_template, media_type="text/plain")
     return JSONResponse(content=dict_type_fields)

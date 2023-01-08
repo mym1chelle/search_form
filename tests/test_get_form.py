@@ -28,6 +28,8 @@ app.dependency_overrides[get_db] = override_get_db
 def test_get_forms_without_params():
     request = client.post(url=URL)
     assert request.status_code == 406
+    content = request.json()
+    assert content['ERROR'] == 'Form is empty'
 
 
 def test_get_forms_duplicated_params():
@@ -37,6 +39,8 @@ def test_get_forms_duplicated_params():
         content=f'field_1=hello&field_1=ivanov@gmail.com'
     )
     assert request.status_code == 409
+    content = request.json()
+    assert content['ERROR'] == 'Form has duplicates'
 
 
 def test_get_form_with_email():
