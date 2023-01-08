@@ -22,7 +22,7 @@ def get_db():
 @app.post("/get_form")
 async def get_template(
         request: Request,
-        db=Depends(get_db)) -> Response | JSONResponse | list:
+        db=Depends(get_db)) -> Response | JSONResponse:
     request_body = await request.body()
     body_dict = dict(parse.parse_qsl(request_body.decode()))
     body_all = parse.parse_qsl(request_body.decode())
