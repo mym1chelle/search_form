@@ -4,7 +4,7 @@
 
 # Тестовое задание по вакансии разработчик Python
 
-[Вакансия](https://core.telegram.org/bots/api)
+[Вакансия](https://hh.ru/vacancy/74409375)
 
 ## Установка
 1. [Установить Poetry](https://python-poetry.org/docs/)
